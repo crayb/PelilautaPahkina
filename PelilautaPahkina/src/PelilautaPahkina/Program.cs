@@ -27,6 +27,8 @@ namespace PelilautaPahkina
 
             var linearray = new[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j' };
 
+            //change
+
             // FIRE ZE CANNONS!
             for (int i = 0; i < 100; i++)
             {
