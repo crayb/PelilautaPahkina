@@ -22,7 +22,7 @@ namespace PelilautaPahkina
                 foreach (var o2 in o)
                 {
                     Board.SetValue(board, o2, 1);
-                    var sadasd = 123;
+                    
                     
                 }
             }
