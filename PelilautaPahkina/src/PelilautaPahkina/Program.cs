@@ -22,15 +22,17 @@ namespace PelilautaPahkina
                 foreach (var o2 in o)
                 {
                     Board.SetValue(board, o2, 1);
+                    var sadasd = 123;
+                    
                 }
             }
 
             var linearray = new[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j' };
 
-            //change
+            //change2
 
             // FIRE ZE CANNONS!
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 100; i++) 
             {
                 if (!string.IsNullOrEmpty(tättärää.shotsFired[i].ToString()))
                     Board.SetValue(board, linearray[i.GetLinearrayNumber()] + "" + i % 10, 4); //SHOT FIRED!
