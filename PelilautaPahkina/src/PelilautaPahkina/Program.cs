@@ -22,8 +22,8 @@ namespace PelilautaPahkina
                 foreach (var o2 in o)
                 {
                     Board.SetValue(board, o2, 1);
-                    
-                    
+
+                    board.SetValue2(o2, 1);                    
                 }
             }
 
@@ -50,7 +50,7 @@ namespace PelilautaPahkina
                 }
             }
 
-            board.DrawBoard();
+            //board.DrawBoard();
             Console.ReadKey();
         }
 
@@ -62,6 +62,24 @@ namespace PelilautaPahkina
                 // Reflection is cool, right : http://stackoverflow.com/questions/619767/set-object-property-using-reflection
                 var pi = typeof(Board).GetField(cordinate, BindingFlags.NonPublic | BindingFlags.Instance);
                 pi.SetValue(lauta, (int)arvo);
+            }
+
+            public void SetValue2(string coordinate, object arvo)
+            {
+                boardpositions[GetLetterCoord(coordinate),GetNumberCoord(coordinate)] = (int)arvo;
+
+            }
+            private int GetLetterCoord(string coordinateLetter)
+            {
+                if(string.IsNullOrEmpty(coordinateLetter)) return 0;
+                string letters = "abcdefghij";
+                var letter = coordinateLetter.Substring(0,1);
+                return letters.IndexOf(letter);
+            }
+            private int GetNumberCoord(string coordinateNumber)
+            {
+                if(string.IsNullOrEmpty(coordinateNumber)) return 0;
+                return Int32.Parse(coordinateNumber.Substring(1));
             }
 
             public static int? GetValue(Board lauta, string cordinate)
@@ -80,6 +98,42 @@ namespace PelilautaPahkina
             private int h1, h2, h3, h4, h5, h6, h7, h8, h9, h10 = 0;
             private int i1, i2, i3, i4, i5, i6, i7, i8, i9, i10 = 0;
             private int j1, j2, j3, j4, j5, j6, j7, j8, j9, j10 = 0;
+
+
+             
+            private int[,] boardpositions = new int[10,10];
+
+            private void Drawline()
+            {
+                Console.WriteLine("---------------------");
+            }
+
+            private void DrawOneCoordinateRow(int[] coordinaterow)
+            { 
+                string result = "";
+                foreach(int c in coordinaterow)
+                {
+                    result+="|"+c.ToBoardCharacter();
+
+                }
+                result+="|";
+
+                Console.WriteLine(result);
+                Drawline();
+                
+
+                // Console.WriteLine("|{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|{8}|{9}|", j1.ToBoardCharacter(), j2.ToBoardCharacter(), j3.ToBoardCharacter(), j4.ToBoardCharacter(), j5.ToBoardCharacter(), j6.ToBoardCharacter(), j7.ToBoardCharacter(), j8.ToBoardCharacter(), j9.ToBoardCharacter(), j10.ToBoardCharacter());
+            }
+
+            public void SamiDrawBoard()
+            {
+                Console.WriteLine("Post Game Analysis :");
+                Console.WriteLine("");
+                Drawline();
+
+            }
+
+
 
             public void DrawBoard()
             {
