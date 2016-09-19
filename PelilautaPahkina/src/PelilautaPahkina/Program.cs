@@ -21,7 +21,7 @@ namespace PelilautaPahkina
             {
                 foreach (var aluksenOsa in alus)
                 {
-                    board.SetValue2(aluksenOsa, Board.BoardStates.Boatpiece);                    
+                    board.SetBoardValue(aluksenOsa, Board.BoardStates.Boatpiece);                    
                 }
             }
 
@@ -42,13 +42,13 @@ namespace PelilautaPahkina
         {
             public enum BoardStates { None = 0, Boatpiece = 1, Shot = 4, Hit = 9 };
 
-            public void SetValue2(string coordinate, object arvo)
+            public void SetBoardValue(string coordinate, object arvo)
             {
                 boardpositions[GetLetterCoord(coordinate),GetNumberCoord(coordinate)] = (int)arvo;
 
             }
 
-            public int GetValue2(string coordinate)
+            public int GetBoardValue(string coordinate)
             {
                 return boardpositions[GetLetterCoord(coordinate),GetNumberCoord(coordinate)];
             }
@@ -72,13 +72,13 @@ namespace PelilautaPahkina
             {
                 var linearray = new[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j' };
                 var coord = linearray[i.GetLinearrayNumber()] + "" + i%10;
-                if (this.GetValue2(coord) == (int) BoardStates.Boatpiece)
+                if (this.GetBoardValue(coord) == (int) BoardStates.Boatpiece)
                 {
-                    SetValue2(coord, BoardStates.Hit);
+                    SetBoardValue(coord, BoardStates.Hit);
                 }
                 else
                 {
-                    SetValue2(coord, BoardStates.Shot);
+                    SetBoardValue(coord, BoardStates.Shot);
                 }
             }
  
