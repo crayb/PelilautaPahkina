@@ -14,6 +14,8 @@ namespace PelilautaPahkina
         {
             var board = new Board();
 
+            //test git
+
             dynamic tättärää = Newtonsoft.Json.JsonConvert.DeserializeObject<ExpandoObject>(System.IO.File.ReadAllText("sotatanner.json"));
 
             // DEPLOY ZE ARMAAADA!
