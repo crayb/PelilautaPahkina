@@ -13,45 +13,34 @@ namespace PelilautaPahkina
         public static void Main(string[] args)
         {
             var board = new Board();
-
-            //test git
-
-            dynamic tättärää = Newtonsoft.Json.JsonConvert.DeserializeObject<ExpandoObject>(System.IO.File.ReadAllText("sotatanner.json"));
+            
+            dynamic pelidata = Newtonsoft.Json.JsonConvert.DeserializeObject<ExpandoObject>(System.IO.File.ReadAllText("sotatanner.json"));
 
             // DEPLOY ZE ARMAAADA!
-            foreach (var o in tättärää.nappulat)
+            foreach (var alus in pelidata.nappulat)
             {
-                foreach (var o2 in o)
+                foreach (var aluksenOsa in alus)
                 {
-                    board.SetValue2(o2, 1);                    
+                    board.SetValue2(aluksenOsa, Board.BoardStates.Boatpiece);                    
                 }
             }
 
             // FIRE ZE CANNONS!
             for (int i = 0; i < 100; i++) 
             {
-                if (!string.IsNullOrEmpty(tättärää.shotsFired[i].ToString()))
+                if (!string.IsNullOrEmpty(pelidata.shotsFired[i].ToString()))
                 {
-                    board.Shoot(i); //refactor this -> shoot(withdata)
+                    board.Shoot(i);
                 }
             }
 
-            // SINKING THE BISHMARK!
-            foreach (var o in tättärää.nappulat) // VAC ENABLED!
-            {
-                foreach (var o2 in o) //names...
-                {
-                    if(board.GetValue2(o2) == 4) board.SetValue2(o2, 9);
-
-                }
-            }
-
-            board.SamiDrawBoard();
+            board.DrawBoard();
             Console.ReadKey();
         }
 
         public class Board
         {
+            public enum BoardStates { None = 0, Boatpiece = 1, Shot = 4, Hit = 9 };
 
             public void SetValue2(string coordinate, object arvo)
             {
@@ -82,7 +71,15 @@ namespace PelilautaPahkina
             public void Shoot(int i)
             {
                 var linearray = new[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j' };
-                SetValue2(linearray[i.GetLinearrayNumber()] + "" + i % 10, 4);                
+                var coord = linearray[i.GetLinearrayNumber()] + "" + i%10;
+                if (this.GetValue2(coord) == (int) BoardStates.Boatpiece)
+                {
+                    SetValue2(coord, BoardStates.Hit);
+                }
+                else
+                {
+                    SetValue2(coord, BoardStates.Shot);
+                }
             }
  
             private int[,] boardpositions = new int[10,10];
@@ -92,11 +89,12 @@ namespace PelilautaPahkina
                 Console.WriteLine("---------------------");
             }
 
-            public void SamiDrawBoard()
+            public void DrawBoard()
             {
                 Console.WriteLine("Post Game Analysis :");
                 Console.WriteLine("");
                 Drawline();
+                //loop rows / positions
                 for(int i = 0; i<10; i++)
                 {
                     for(int j = 0; j< 10; j++)
@@ -135,12 +133,14 @@ namespace PelilautaPahkina
         {
             switch (i)
             {
-                case 1:
+                case (int)Program.Board.BoardStates.Boatpiece:
                     return '*';
-                case 4:
+                case (int)Program.Board.BoardStates.Shot:
                     return 'o';
-                case 9:
+                case (int)Program.Board.BoardStates.Hit:
                     return 'X';
+                case (int)Program.Board.BoardStates.None:
+                    return ' ';
                 default:
                     return ' ';
             }
